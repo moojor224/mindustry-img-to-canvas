@@ -1,0 +1,21 @@
+{
+  "name": "mindustry-img-to-canvas",
+  "version": "1.0.0",
+  "description": "convert images to mindustry canvases",
+  "main": "background.js",
+  "author": "Jordan Moore",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^28.2.0",
+    "electron-rebuild": "^3.2.9"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "dependencies": {
+    "canvas": "^2.11.2",
+    "mindustryio": "^0.1.0",
+    "nearest-color": "^0.4.4",
+    "node-gyp": "^10.0.1"
+  }
+}

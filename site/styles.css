@@ -1,0 +1,19 @@
+:root {
+    --grid-size: 3px;
+}
+
+body {
+    margin-bottom: 20px;
+}
+
+.outputTables>div {
+    margin-bottom: var(--grid-size);
+}
+
+.outputTables>div>table {
+    margin-right: var(--grid-size);
+}
+
+#scale {
+    width: 300px;
+}
