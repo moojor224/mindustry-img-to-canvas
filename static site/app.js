@@ -250,6 +250,8 @@ function makeSchematic(packet) {
 
 function imageDataToGrid(imageData) {
     if (!hasPreviewed) {
+        previewpt2();
+        imageDataToGrid(colors);
         return;
     }
     let preConversionColorsArr = imageDataToArray(imageData);
