@@ -243,7 +243,7 @@ function makeSchematic(packet) {
             mindustryioschem.tile(x, y).setConfig(Buffer.from(new Uint8Array(config)));
         }
     }
-    mindustryioschem.tags.name = "name";
+    mindustryioschem.tags.name = infilename;
     schematicToSave = mindustryioschem;
     return {};
 };
