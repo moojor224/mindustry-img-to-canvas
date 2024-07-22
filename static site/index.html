@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mindustry image to canvas schematic converter</title>
+    <style>
+        #previewRow>td:first-of-type>div {
+            width: 200px;
+        }
+
+        #dimensions td {
+            padding: 5px;
+        }
+
+        .canvas {
+            background: linear-gradient(#ffffff, #ffffff) 50% 50%/calc(100% - 18px) calc(100% - 18px) no-repeat,
+                conic-gradient(#fbb17f 0%, #989ba5 3%, #989ba5 21%, #fbb17f 25%, #989ba5 28%, #989ba5 46%, #bd5453 50%, #989ba5 54%, #989ba5 71%, #bd5453 75%, #989ba5 79%, #989ba5 96%, #fbb17f 100%);
+            border-radius: 0px;
+            padding: 12px;
+            box-sizing: border-box;
+        }
+
+        canvas#output {
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+        }
+    </style>
+    <link rel="stylesheet" href="./styles.css">
+    <script src="./buffer.js"></script>
+    <script src="./jstools.js"></script>
+    <script src="./zlib.js"></script>
+    <script src="./nearestcolor.js"></script>
+    <script src="./mindustryio.js"></script>
+</head>
+
+<body>
+    <label for="input">file input</label><input type="file" name="" id="input" accept="image/*"><br>
+    <span>
+        <button id="scaleSubtract">-</button>
+        <input type="range" id="scale" min="5" max="500" step="5" value="100">
+        <button id="scaleAdd">+</button>
+    </span><br>
+    <label for="scale">scale size: <span id="scaleDisplay"></span>%</label><br>
+    <button id="previewButton">Preview</button><button id="runButton">Convert</button>
+    <table>
+        <tr>
+            <td></td>
+            <td>
+                <table id="dimensions">
+                    <tr>
+                        <td>width: </td>
+                        <td><span id="width">0</span> pixels</td>
+                        <td><span id="cWidth">0</span> canvas tiles</td>
+                    </tr>
+                    <tr>
+                        <td>height: </td>
+                        <td><span id="height">0</span> pixels</td>
+                        <td><span id="cHeight">0</span> canvas tiles</td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><span id="cTotal"></span> total canvas tiles</td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <td>original image</td>
+            <td><canvas id="preview" height="0"></canvas></td>
+        </tr>
+        <tr id="previewRow">
+            <td>preview</td>
+            <td>
+                <canvas id="output" height="0"></canvas>
+            </td>
+        </tr>
+    </table>
+    <div id="outTables"></div>
+    <script src="./jstools.js"></script>
+    <!-- <script src="./main.js"></script> -->
+    <script src="./app.js"></script>
+</body>
+
+</html>
