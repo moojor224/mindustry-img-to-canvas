@@ -93,7 +93,7 @@ let colors, canvas, width, height;
 let schem_text = document.getElementById("base64");
 let infilename = "";
 async function previewFile() {
-    disable("#convertButton", "#exportButton");
+    disable("#convertButton", "#exportButton", "#copy");
     schem_text.value = "";
     hasPreviewed = false;
     let file = document.querySelector('#input').files[0];
