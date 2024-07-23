@@ -77,6 +77,9 @@ document.getElementById("scaleAdd").onclick = function () {
     }
     scale.oninput();
 }
+document.getElementById("copy").addEventListener("click", function () {
+    navigator.clipboard.writeText(base64);
+});
 let c = 100, s = 0.75;
 let hasPreviewed = false;
 scale.oninput = _ => {
@@ -85,13 +88,17 @@ scale.oninput = _ => {
     c = 100;
 }
 scale.oninput();
-window.setInterval(_ => c ? (c--, !c ? previewpt1() : 0) : 0, s * 10);
+window.setInterval(_ => c ? (c--, !c ? previewFile() : 0) : 0, s * 10);
 let colors, canvas, width, height;
+let schem_text = document.getElementById("base64");
 let infilename = "";
-async function previewpt1() {
+async function previewFile() {
+    disable("#convertButton", "#exportButton");
+    schem_text.value = "";
     hasPreviewed = false;
     let file = document.querySelector('#input').files[0];
     if (typeof file == "undefined") return;
+    enable("#previewButton");
     infilename = file.name.split(".");
     infilename.pop();
     infilename = infilename.join(".");
@@ -123,7 +130,11 @@ async function previewpt1() {
     });
 }
 
-function previewpt2() {
+/** run closest color function and display bottom preview */
+function previewSchematic() {
+    enable("#convertButton");
+    disable("#previewButton", "#exportButton", "#copy");
+    schem_text.value = "";
     hasPreviewed = true;
     let ctx = canvas.getContext("2d");
     colors = ctx.getImageData(0, 0, width, height);
@@ -144,9 +155,14 @@ function previewpt2() {
     outputCtx.putImageData(colors, 0, 0);
 }
 
-document.querySelector("#runButton").addEventListener("click", () => imageDataToGrid(colors));
-document.querySelector("#previewButton").addEventListener("click", previewpt2);
-document.querySelector("input[type=file]").addEventListener("change", previewpt1);
+document.getElementById("previewButton").addEventListener("click", previewSchematic);
+document.getElementById("convertButton").addEventListener("click", convertToSchematic);
+document.getElementById("exportButton").addEventListener("click", saveFile);
+document.querySelector("input[type=file]").addEventListener("change", () => {
+    previewFile();
+    enable("#previewButton");
+    disable("#convertButton", "#exportButton", "#copy");
+});
 
 function imageDataToArray(imageData) {
     let pixels = [];
@@ -207,6 +223,7 @@ function nearestColors(grid) {
 }
 
 let schematicToSave = "";
+let base64 = "";
 
 function saveFile() {
     let filename = infilename + ".msch";
@@ -214,8 +231,7 @@ function saveFile() {
     let file = new Blob([data], { type: "text/plain" });
     if (window.navigator.msSaveOrOpenBlob) {
         window.navigator.msSaveOrOpenBlob(file, filename);
-    }
-    else {
+    } else {
         let a = document.createElement("a"),
             url = URL.createObjectURL(file);
         a.href = url;
@@ -245,16 +261,20 @@ function makeSchematic(packet) {
     }
     mindustryioschem.tags.name = infilename;
     schematicToSave = mindustryioschem;
-    return {};
+    base64 = btoa([...schematicToSave.toBuffer()].map(e => String.fromCodePoint(e)).join(""));
+    document.getElementById("base64").value = base64;
 };
 
-function imageDataToGrid(imageData) {
+/** convert bottom preview to schematic */
+function convertToSchematic() {
+    enable("#exportButton", "#copy");
+    disable("#convertButton");
     if (!hasPreviewed) {
-        previewpt2();
-        imageDataToGrid(colors);
+        previewSchematic();
+        convertToSchematic(colors);
         return;
     }
-    let preConversionColorsArr = imageDataToArray(imageData);
+    let preConversionColorsArr = imageDataToArray(colors);
     let grid = chunk2DArray(preConversionColorsArr, 12);
     let arrs = nearestColors(grid.flat());
     arrs = arrs.map(canvas => encode(canvas.map(row => row.map(color => color.toString(2).padStart(3, 0)).join(",")).join("\n")));
@@ -262,5 +282,4 @@ function imageDataToGrid(imageData) {
     let width = parseInt(document.getElementById("cWidth").textContent.match(/\d+/g)[0]);
     let height = arrs.length / width;
     makeSchematic({ width, height, arrs });
-    saveFile();
 }

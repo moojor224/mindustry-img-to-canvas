@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mindustry image to canvas schematic converter</title>
     <style>
-        #previewRow>td:first-of-type>div {
-            width: 200px;
-        }
-
         #dimensions td {
             padding: 5px;
         }
@@ -36,51 +32,59 @@
 </head>
 
 <body>
-    <label for="input">file input</label><input type="file" name="" id="input" accept="image/*"><br>
-    <span>
-        <button id="scaleSubtract">-</button>
-        <input type="range" id="scale" min="5" max="500" step="5" value="100">
-        <button id="scaleAdd">+</button>
-    </span><br>
-    <label for="scale">scale size: <span id="scaleDisplay"></span>%</label><br>
-    <button id="previewButton">Preview</button><button id="runButton">Convert</button>
-    <table>
-        <tr>
-            <td></td>
-            <td>
-                <table id="dimensions">
-                    <tr>
-                        <td>width: </td>
-                        <td><span id="width">0</span> pixels</td>
-                        <td><span id="cWidth">0</span> canvas tiles</td>
-                    </tr>
-                    <tr>
-                        <td>height: </td>
-                        <td><span id="height">0</span> pixels</td>
-                        <td><span id="cHeight">0</span> canvas tiles</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td><span id="cTotal"></span> total canvas tiles</td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-        <tr>
-            <td>original image</td>
-            <td><canvas id="preview" height="0"></canvas></td>
-        </tr>
-        <tr id="previewRow">
-            <td>preview</td>
-            <td>
-                <canvas id="output" height="0"></canvas>
-            </td>
-        </tr>
-    </table>
-    <div id="outTables"></div>
-    <script src="./jstools.js"></script>
-    <!-- <script src="./main.js"></script> -->
+    <div class="controls">
+        <label for="input">file input </label><input type="file" name="" id="input" accept="image/*"><br>
+        <span>
+            <button id="scaleSubtract">-</button>
+            <input type="range" id="scale" min="5" max="500" step="5" value="100">
+            <button id="scaleAdd">+</button>
+        </span><br>
+        <label for="scale">scale size: <span id="scaleDisplay"></span>%</label><br>
+        <button id="previewButton" disabled>Preview</button>
+        <button id="convertButton" disabled>Convert to Schematic</button>
+        <button id="exportButton" disabled>Save Schematic File</button>
+        <table>
+            <tr>
+                <td></td>
+                <td>
+                    <table id="dimensions">
+                        <tr>
+                            <td>width: </td>
+                            <td><span id="width">0</span> pixels</td>
+                            <td><span id="cWidth">0</span> canvas tiles</td>
+                        </tr>
+                        <tr>
+                            <td>height: </td>
+                            <td><span id="height">0</span> pixels</td>
+                            <td><span id="cHeight">0</span> canvas tiles</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td><span id="cTotal"></span> total canvas tiles</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="previews">
+        <table>
+            <tr>
+                <td>original image</td>
+                <td><canvas id="preview" height="0"></canvas></td>
+            </tr>
+            <tr id="previewRow">
+                <td>preview</td>
+                <td><canvas id="output" height="0"></canvas></td>
+            </tr>
+        </table>
+    </div>
+    <div class="base64">
+        <div>Schematic text</div>
+        <textarea id="base64" cols="100" rows="20" placeholder="output schematic text" readonly></textarea>
+        <button id="copy" disabled>Copy Text</button>
+    </div>
     <script src="./app.js"></script>
 </body>
 
